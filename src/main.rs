@@ -11,10 +11,10 @@ fn main() {
     // 2. ipv4calc <ipaddr> <number of subnets>
     match args.len() {
         2 => {
-            get_ip_details(&args[1]);
+            show_ip_details(&args[1]);
         },
         3 => {
-
+            show_subnets(&args[1], args[2].parse().expect("ERROR: Wrong argument."));
         },
         _ => {
             println!("ERROR: Wrong arguments.\nipv4calc <ipaddr>/<cidr>");
@@ -24,11 +24,11 @@ fn main() {
 
 }
 
-fn get_ip_details(ip: &String) {
+fn show_ip_details(ip: &String) {
     // parse the ip
     let ip = IPAddress::parse(ip)
         .unwrap_or_else( |_err| {
-            println!("\t- ERROR: Invalid IP");
+            println!("- ERROR: Invalid IP");
             process::exit(1);
         });
 
@@ -42,4 +42,28 @@ fn get_ip_details(ip: &String) {
     println!("\t- BROADCAST:\t\t{}", ip.broadcast().to_string());
     println!("\t- First Host:\t\t{}", ip.first().to_string());
     println!("\t- Last Host:\t\t{}", ip.last().to_string());
+}
+
+fn show_subnets(ip: &String, subnets: u8) {
+    // parse the ip
+    let ip = IPAddress::parse(ip)
+        .unwrap_or_else( |_err| {
+            println!("- ERROR: Invalid IP");
+            process::exit(1);
+        });
+
+    let subnet_ips = ip.subnet(ip.prefix.num + ((subnets as f32).log2().ceil()) as usize);
+
+    match subnet_ips {
+        Ok(subnet_ips) => {
+            for i in 0..subnets {
+                println!("{}", subnet_ips[i as usize].to_string());
+            }
+        },
+        Err(err) => {
+            println!("- ERROR: {}", err);
+            process::exit(1);
+        }
+    }
+
 }
