@@ -4,18 +4,17 @@
 
 # Installation ⏬
 
-Install the **latest release** from the **Release** section.
+Install the **latest release** for your operating system from the **Release** section.
 
 # Usage 💻
 
-- After you have installed the executable, open a terminal under the folder where the executable is located.
 - To get the details from an ip address just type it like this:
   
   ```bash
   ipv4calc 192.168.0.1/24
   ```
   if the prefix is omitted, it will be the class one.
-- To calculate the subnets you have to type the ip followed by the number of subnet you want:
+- To calculate the subnets you have to type the ip followed by the number of subnets you want:
 
   ```bash
   ipv4calc 192.168.0.1 2
